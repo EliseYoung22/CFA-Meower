@@ -1,6 +1,17 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_current_user, only: [:toggle_like, :toggle_follow, :create]
 
+  def toggle_follow
+      current_user.toggle_follow!(User.find(params[:user_id]))
+      redirect_to :back
+    end
+
+    def toggle_like
+    #sats @post
+    current_user.toggle_like!(@post)
+    redirect_to :back
+  end
   # GET /posts
   # GET /posts.json
   def index
@@ -10,6 +21,9 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    @follow_status = current_user.follows?(@post.user) ? 'Unfollow' : 'Follow'
+    @like_status = current_user.likes?(@post) ? 'Unlike' : 'Like'
+
   end
 
   # GET /posts/new
