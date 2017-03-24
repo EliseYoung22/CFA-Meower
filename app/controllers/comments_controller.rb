@@ -1,6 +1,11 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
 
+  def comments
+    current_user.comments
+    redirect_to :back
+  end
+
   # GET /comments
   # GET /comments.json
   def index
@@ -10,6 +15,8 @@ class CommentsController < ApplicationController
   # GET /comments/1
   # GET /comments/1.json
   def show
+    @comment = current_user.comment(@post.user) 'comment'
+
   end
 
   # GET /comments/new
